@@ -5,11 +5,17 @@ public class MeshCollider : Collider
 {
     private Mesh _mesh;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         var meshFilter = GetComponent<MeshFilter>();
         _mesh = meshFilter?.mesh;
     }
+
+    protected override void OnEnable() => base.OnEnable();
+
+    protected override void OnDisable() => base.OnDisable();
 
     public override Vector3 FindFurthestPoint(Vector3 direction)
     {

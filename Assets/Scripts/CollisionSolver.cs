@@ -6,6 +6,12 @@ public class CollisionSolver : MonoBehaviour
     public List<Collider> Colliders 
     { get; private set; } = new List<Collider>();
 
+    private void Start()
+    {
+        var col = GJK(Colliders[0], Colliders[1]);
+        Debug.Log(col);        
+    }
+
     private bool GJK(Collider colliderA, Collider colliderB)
     {
         var support = Support(colliderA, colliderB, Vector3.forward);
@@ -14,6 +20,8 @@ public class CollisionSolver : MonoBehaviour
         points.Push(support);
 
         var direction = -support;
+
+        var i = 0;
 
         while (true) 
         {
@@ -26,6 +34,13 @@ public class CollisionSolver : MonoBehaviour
 
             if (points.NextSimplex(ref direction))
                 return true;
+
+            i++;
+            if (i == 1000)
+            {
+                Debug.LogError("Infinite Loop");
+                return false;
+            }
         }
     }
 
