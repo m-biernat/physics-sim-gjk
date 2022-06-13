@@ -8,9 +8,9 @@ public class Move : MonoBehaviour
     [SerializeField]
     private float _speed;
 
-    private void Update()
+    private void FixedUpdate()
     {
-        var step = _speed * Time.deltaTime;
+        var step = _speed * Time.fixedDeltaTime;
         transform.position = 
             Vector3.MoveTowards(transform.position, _target, step);
 
