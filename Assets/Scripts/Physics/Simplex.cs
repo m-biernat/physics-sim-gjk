@@ -14,11 +14,11 @@ public class Simplex
 
     public void Push(Vector3 point)
     {
-        _points[0] = point;
-        _points[1] = _points[0];
-        _points[2] = _points[1];
         _points[3] = _points[2];
-  
+        _points[2] = _points[1];
+        _points[1] = _points[0];
+        _points[0] = point;
+
         _size = Mathf.Min(_size + 1, 4);
     }
 

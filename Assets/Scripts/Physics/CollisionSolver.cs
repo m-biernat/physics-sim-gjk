@@ -6,10 +6,32 @@ public class CollisionSolver : MonoBehaviour
     public List<Collider> Colliders 
     { get; private set; } = new List<Collider>();
 
-    private void Start()
+    private void FixedUpdate() => SolveCollisions();
+
+    private void SolveCollisions()
     {
-        var col = GJK(Colliders[0], Colliders[1]);
-        Debug.Log(col);        
+        var count = Colliders.Count;
+
+        if (count < 1)
+            return;
+        
+        if (count == 1 && Colliders[0].Colliding)
+        {
+            var collider = Colliders[0];
+            collider.RegisterCollisionResult(false);
+            collider.UpdateState();
+            return;
+        }
+
+        for (int i = 0; i < count - 1; i++)
+            for (int j = i + 1; j < count; j++)
+            {
+                var collision = GJK(Colliders[i], Colliders[j]);
+                Colliders[i].RegisterCollisionResult(collision);
+                Colliders[j].RegisterCollisionResult(collision);
+            }
+
+        Colliders.ForEach((collider) => collider.UpdateState());
     }
 
     private bool GJK(Collider colliderA, Collider colliderB)
